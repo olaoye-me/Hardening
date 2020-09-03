@@ -86,6 +86,19 @@ chmod og-rwx /var/log/user /var/log/kern.log /var/log/daemon.log /var/log/syslog
 chown root:root /var/log/user /var/log/kern.log /var/log/daemon.log /var/log/syslog /var/log/unused.log
 
 
+# CIS 4.1.1.1 
+Configure Audit Log Storage Size
+sed -i 's/^max_log_file .*$/max_log_file = 1024/' ${auditd_conf}
+# CIS 4.1.1.2 
+Disable system on Audit Log Full - This is VERY environment specific (and likely controversial)
+sed -i 's/^space_left_action.*$/space_left_action = email/' ${auditd_conf}
+sed -i 's/^action_mail_acct.*$/action_mail_acct = root/' ${auditd_conf}
+sed -i 's/^admin_space_left_action.*$/admin_space_left_action = halt/' ${auditd_conf}
+# CIS 4.1.1.3 Keep All Auditing Information
+sed -i 's/^max_log_file_action.*$/max_log_file_action = keep_logs/' ${auditd_conf}
+
+
+
 # CIS 5.1.2-5.1.7
 chown root:root /etc/anacrontab	/etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d
 chmod 600 /etc/anacrontab /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d
